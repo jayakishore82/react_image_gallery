@@ -4,19 +4,19 @@ import apiKey from './config';
 import PhotoList from './PhotoList'
 import Menu from './Menu';
 
+let searchWord = "";
 export default class PhotoContainer extends Component {
 
   constructor() {
     super();
     this.state = {
       photos : [],
-      searchWord : "",
       loading: true,
     };
   }
 
   componentDidMount() {
-    this.state.searchWord = this.props.match.params.searchWord;
+    searchWord = this.props.match.params.searchWord;
     this.fetchFlickrData(this.props.match.params.searchWord);
   }
 
@@ -35,10 +35,9 @@ export default class PhotoContainer extends Component {
 
   componentWillReceiveProps(nextProps) {
 
-    if(nextProps != this.props) {
-
-      this.setState({searchWord:nextProps.match.params.searchWord,
-                     loading:true,
+    if(nextProps !== this.props) {
+      searchWord = nextProps.match.params.searchWord;
+      this.setState({loading:true,
                     })
       this.fetchFlickrData(nextProps.match.params.searchWord);
     }
@@ -56,7 +55,7 @@ export default class PhotoContainer extends Component {
            <p>Loading....</p>
           :
             <div className="photo-container">
-              <PhotoList photos={this.state.photos} searchWord={this.state.searchWord} />
+              <PhotoList photos={this.state.photos} searchWord={searchWord} />
             </div>
          }
 
